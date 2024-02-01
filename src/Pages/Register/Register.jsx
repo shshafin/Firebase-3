@@ -35,6 +35,7 @@ const Register = () => {
       .then((res) => {
         console.log(res.user);
         toast.success("Registration Successful!");
+        e.target.reset();
       })
       .catch((error) => {
         console.log(error);

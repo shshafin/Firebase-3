@@ -9,12 +9,13 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UseAuth from "../../Hook/UseAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signInUser } = UseAuth();
+  const { signInUser, GoogleLogin } = UseAuth();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -27,10 +28,23 @@ const Login = () => {
       .then((res) => {
         console.log(res.user);
         toast.success("Login Successful!");
+        e.target.reset();
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
         toast.error("Login Failed!");
+      });
+  };
+
+  // google login
+  const handleGoogleLogin = () => {
+    GoogleLogin()
+      .then((res) => {
+        console.log(res.user);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -74,6 +88,23 @@ const Login = () => {
                   <Link to={"/register"}>Sign up</Link>
                 </Typography>
               </Typography>
+
+              <div className="flex justify-center items-center mt-5">
+                <Button
+                  onClick={handleGoogleLogin}
+                  size="sm"
+                  variant="outlined"
+                  color="blue-gray"
+                  className="flex items-center gap-3"
+                >
+                  <img
+                    src="https://docs.material-tailwind.com/icons/google.svg"
+                    alt="metamask"
+                    className="h-6 w-6"
+                  />
+                  Continue with Google
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         </form>
